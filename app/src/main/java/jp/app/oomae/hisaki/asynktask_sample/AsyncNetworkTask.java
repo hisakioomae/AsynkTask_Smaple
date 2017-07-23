@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -19,12 +20,14 @@ import java.net.URL;
 public class AsyncNetworkTask extends AsyncTask<String,Integer,String>{
 
     private TextView textView;
+    private ProgressBar progressBar;
 
     //結果を反映させるTextviewを取得
     public AsyncNetworkTask(Context context){
         super();
         MainActivity activity = (MainActivity)context;
         textView = (TextView)activity.findViewById(R.id.txtresult);
+        progressBar = (ProgressBar)activity.findViewById(R.id.progress);
     }
 
     //非同期でHTTP GETリクエストを送信
@@ -54,21 +57,28 @@ public class AsyncNetworkTask extends AsyncTask<String,Integer,String>{
         return builder.toString();
     }
 
-    //進捗状況をログに出力
+    @Override
+    protected void onPreExecute(){
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    //進捗状況出力
     @Override
     protected void onProgressUpdate(Integer... values){
-        Log.d("url",values[0].toString());
+        progressBar.setProgress(values[0]);
     }
 
     //非同期を終了した後Textviewに反映
     @Override
     protected void onPostExecute(String result){
         textView.setText(result);
+        progressBar.setVisibility(ProgressBar.GONE);
     }
 
     //非同期処理をキャンセルしたときtextviewにキャンセルを反映
     @Override
     protected void onCancelled(){
         textView.setText("キャンセルしました。");
+        progressBar.setVisibility(ProgressBar.GONE);
     }
 }

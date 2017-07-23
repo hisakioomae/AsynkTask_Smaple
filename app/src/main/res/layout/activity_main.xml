@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context="jp.app.oomae.hisaki.asynktask_sample.MainActivity">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:visibility="gone"
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:onClick="btn_onClick"
         android:id="@+id/btn"
